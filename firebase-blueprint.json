@@ -1,0 +1,89 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile representation",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Track": {
+      "title": "Track",
+      "description": "A representation of a song/track in the application",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "artist": { "type": "string" },
+        "album": { "type": "string" },
+        "img": { "type": "string" },
+        "src": { "type": "string" },
+        "duration": { "type": "number" }
+      },
+      "required": ["id", "title", "artist", "img", "src"]
+    },
+    "Playlist": {
+      "title": "Playlist",
+      "description": "User created playlist containing tracks",
+      "type": "object",
+      "properties": {
+        "playlistId": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "ownerName": { "type": "string" },
+        "isPublic": { "type": "boolean" },
+        "tracks": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["playlistId", "name", "ownerId", "tracks", "createdAt"]
+    },
+    "LikedSong": {
+      "title": "LikedSong",
+      "description": "A track liked by a user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "trackId": { "type": "string" },
+        "track": { "$ref": "#/entities/Track" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "trackId", "track", "createdAt"]
+    },
+    "RecentlyPlayed": {
+      "title": "RecentlyPlayed",
+      "description": "A track recently played by a user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "trackId": { "type": "string" },
+        "track": { "$ref": "#/entities/Track" },
+        "playedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "trackId", "track", "playedAt"]
+    }
+  },
+  "firestore": {
+    "/playlists/{playlistId}": {
+      "schema": "Playlist",
+      "description": "User custom playlists"
+    },
+    "/liked_songs/{likedSongId}": {
+      "schema": "LikedSong",
+      "description": "Tracks liked by users"
+    },
+    "/recently_played/{playedId}": {
+      "schema": "RecentlyPlayed",
+      "description": "User play history"
+    }
+  }
+}

@@ -1,0 +1,114 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global safety net - Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Helper to validate a track object
+    function isValidTrack(track) {
+      return track != null &&
+        track.id is string && track.id.size() <= 128 &&
+        track.title is string && track.title.size() <= 256 &&
+        track.artist is string && track.artist.size() <= 256 &&
+        track.img is string && track.img.size() <= 2048 &&
+        track.src is string && track.src.size() <= 2048;
+    }
+
+    // Playlist Validations
+    function isValidPlaylist(data) {
+      return data != null &&
+        isValidId(data.playlistId) &&
+        data.name is string && data.name.size() > 0 && data.name.size() <= 128 &&
+        (!('description' in data) || (data.description is string && data.description.size() <= 512)) &&
+        data.ownerId == request.auth.uid &&
+        data.ownerName is string && data.ownerName.size() <= 128 &&
+        data.isPublic is bool &&
+        data.tracks is list && data.tracks.size() <= 500 &&
+        (data.tracks.size() == 0 || isValidTrack(data.tracks[0]));
+    }
+
+    match /playlists/{playlistId} {
+      allow get: if isValidId(playlistId) && (existing().isPublic == true || isOwner(existing().ownerId));
+      allow list: if isSignedIn() && (resource.data.isPublic == true || isOwner(resource.data.ownerId));
+      
+      allow create: if isValidId(playlistId) && 
+                      isSignedIn() && 
+                      isValidPlaylist(incoming()) && 
+                      incoming().createdAt == request.time;
+                      
+      allow update: if isValidId(playlistId) && 
+                      isOwner(existing().ownerId) && 
+                      isValidPlaylist(incoming()) && 
+                      incoming().ownerId == existing().ownerId && 
+                      incoming().createdAt == existing().createdAt && 
+                      incoming().updatedAt == request.time;
+                      
+      allow delete: if isValidId(playlistId) && isOwner(existing().ownerId);
+    }
+
+    // Liked Songs Validations
+    function isValidLikedSong(data) {
+      return data != null &&
+        data.id is string && data.id.size() <= 256 &&
+        data.userId == request.auth.uid &&
+        data.trackId is string && data.trackId.size() <= 128 &&
+        isValidTrack(data.track);
+    }
+
+    match /liked_songs/{likedSongId} {
+      allow get: if isValidId(likedSongId) && isOwner(existing().userId);
+      allow list: if isSignedIn() && isOwner(resource.data.userId);
+      
+      allow create: if isValidId(likedSongId) && 
+                      isSignedIn() && 
+                      isValidLikedSong(incoming()) && 
+                      incoming().createdAt == request.time;
+                      
+      allow delete: if isValidId(likedSongId) && isOwner(existing().userId);
+    }
+
+    // Recently Played Validations
+    function isValidRecentlyPlayed(data) {
+      return data != null &&
+        data.id is string && data.id.size() <= 256 &&
+        data.userId == request.auth.uid &&
+        data.trackId is string && data.trackId.size() <= 128 &&
+        isValidTrack(data.track);
+    }
+
+    match /recently_played/{playedId} {
+      allow get: if isValidId(playedId) && isOwner(existing().userId);
+      allow list: if isSignedIn() && isOwner(resource.data.userId);
+      
+      allow create: if isValidId(playedId) && 
+                      isSignedIn() && 
+                      isValidRecentlyPlayed(incoming()) && 
+                      incoming().playedAt == request.time;
+                      
+      allow delete: if isValidId(playedId) && isOwner(existing().userId);
+    }
+  }
+}
