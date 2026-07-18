@@ -56,57 +56,75 @@ const COVER_IMAGES = [
 const DEFAULT_TRACKS = [
   {
     id: "default_1",
-    title: "Midnight Drive",
-    artist: "Neon Horizon",
-    album: "Synthwave Odyssey",
-    img: COVER_IMAGES[0],
+    title: "Kesariya",
+    artist: "Arijit Singh, Pritam",
+    album: "Brahmāstra",
+    img: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&q=80",
     src: AUDIO_SOURCES[0],
-    duration: 372
+    duration: 268
   },
   {
     id: "default_2",
-    title: "Golden Hour Vibes",
-    artist: "Summer Sunset",
-    album: "Lo-Fi Paradise",
-    img: COVER_IMAGES[1],
+    title: "Tum Hi Ho",
+    artist: "Arijit Singh",
+    album: "Aashiqui 2",
+    img: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=500&q=80",
     src: AUDIO_SOURCES[1],
-    duration: 412
+    duration: 262
   },
   {
     id: "default_3",
-    title: "Acoustic Whispers",
-    artist: "Emma & The Guitar",
-    album: "Unplugged Sessions",
-    img: COVER_IMAGES[2],
+    title: "Chaiyya Chaiyya",
+    artist: "Sukhwinder Singh, Sapna Awasthi",
+    album: "Dil Se",
+    img: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500&q=80",
     src: AUDIO_SOURCES[2],
-    duration: 298
+    duration: 342
   },
   {
     id: "default_4",
-    title: "Techno Beats 2026",
-    artist: "Cyber Club",
-    album: "Futuristic Pulsar",
-    img: COVER_IMAGES[3],
+    title: "Kabira",
+    artist: "Tochi Raina, Rekha Bhardwaj",
+    album: "Yeh Jawaani Hai Deewani",
+    img: "https://images.unsplash.com/photo-1484876065684-b683cf17d276?w=500&q=80",
     src: AUDIO_SOURCES[3],
-    duration: 335
+    duration: 223
   },
   {
     id: "default_5",
-    title: "Chill Cafe",
-    artist: "Morning Brew",
-    album: "Jazz Lounge Selection",
-    img: COVER_IMAGES[4],
+    title: "Zaalima",
+    artist: "Arijit Singh, Harshdeep Kaur",
+    album: "Raees",
+    img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&q=80",
     src: AUDIO_SOURCES[4],
-    duration: 380
+    duration: 298
   },
   {
     id: "default_6",
-    title: "Epic Cinematic Orchestral",
-    artist: "Symphony of Stars",
-    album: "Cosmic Journey",
-    img: COVER_IMAGES[5],
+    title: "Kal Ho Naa Ho",
+    artist: "Sonu Nigam",
+    album: "Kal Ho Naa Ho",
+    img: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=500&q=80",
     src: AUDIO_SOURCES[5],
-    duration: 420
+    duration: 321
+  },
+  {
+    id: "default_7",
+    title: "Apna Bana Le",
+    artist: "Arijit Singh, Sachin-Jigar",
+    album: "Bhediya",
+    img: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500&q=80",
+    src: AUDIO_SOURCES[6],
+    duration: 264
+  },
+  {
+    id: "default_8",
+    title: "Ghar More Pardesiya",
+    artist: "Shreya Ghoshal",
+    album: "Kalank",
+    img: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=500&q=80",
+    src: AUDIO_SOURCES[7],
+    duration: 319
   }
 ];
 
